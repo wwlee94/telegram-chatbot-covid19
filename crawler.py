@@ -8,64 +8,53 @@ def get_total_cityline():
     result = requests.get(BASE_URL)
     soup = BeautifulSoup(result.text, 'html.parser')
 
-    data = []
-    title = [
-        '-',
-        '전일대비증감',
-        '확진환자수',
-        '격리해제수',
-        '사망자수',
-        '발생률(*)'
-    ]
-    data.append(title)
 
     table = soup.select('.num tbody tr.sumline')[0]
-    result = []
+    string = ''
     tds = table.select('td')
 
-    result.append('합계')    
-    result.append(tds[0].text)
-    result.append(tds[1].text)
-    result.append(tds[2].text)
-    result.append(tds[3].text)
-    result.append(tds[4].text)
-    data.append(result)
+    string += '🏥 최근 코로나 확진자 합계\n'
+    string += f'[전일대비 확진자 증감] {tds[0].text}명\n'
+    string += f'[확진 환자 수] {tds[1].text}명\n'
+    string += f'[격리 환자 수] {tds[2].text}명\n'
+    string += f'[사망자 수] {tds[3].text}명\n'
+    string += f'[발생률*] {tds[4].text}\n'
 
-    data = pretty_print(data)
-    return data
+    helper = '\n💁🏻‍♀️ * 인구 10만 명당 (지역별 인구 출처 : 행정안전부 (’20.1월 기준))'
+    return string + helper
 
-def get_all_citylines():
-    result = requests.get(BASE_URL)
-    # result.text -> 문자열 리턴, result.content -> 바이트 리턴
-    soup = BeautifulSoup(result.text, 'html.parser')
+# 테이블
+# def get_all_citylines():
+#     result = requests.get(BASE_URL)
+#     # result.text -> 문자열 리턴, result.content -> 바이트 리턴
+#     soup = BeautifulSoup(result.text, 'html.parser')
 
-    data =[]
-    title = [
-        '시도명',
-        '전일대비증감',
-        '확진환자',
-        '사망자',
-        '발생률(*)'
-    ]
-    data.append(title)
+#     data =[]
+#     title = [
+#         '시도명',
+#         '전일대비',
+#         '확진자',
+#         '사망자',
+#         '발생률(*)'
+#     ]
+#     data.append(title)
 
-    table = soup.select('.num tbody tr')
-    for idx, row in enumerate(table[1:]):
-        result = []
-        city = row.select('th')[0].text
-        tds = row.select('td')
+#     table = soup.select('.num tbody tr')
+#     for idx, row in enumerate(table[1:]):
+#         result = []
+#         city = row.select('th')[0].text
+#         tds = row.select('td')
 
-        result.append(city) # 시도명
-        result.append(tds[0].text) # 전일대비 확진환자 증감
-        result.append(tds[1].text) # 확진 환자수
-        result.append(tds[3].text) # 사망자 수
-        result.append(tds[4].text) # 발생률
-        data.append(result)
-    
-    data = pretty_print(data)
+#         result.append(city) # 시도명
+#         result.append(tds[0].text) # 전일대비 확진환자 증감
+#         result.append(tds[1].text) # 확진 환자수
+#         result.append(tds[3].text) # 사망자 수
+#         result.append(tds[4].text) # 발생률
+#         data.append(result)
 
-    return data
+#     return data
 
+# 콘솔 확인용
 def pretty_print(data):
     x = PrettyTable()
 
@@ -73,6 +62,4 @@ def pretty_print(data):
 
     for dat in data[1:]:
         x.add_row(dat)
-
-    helper = '\n\n (*) 인구 10만 명당 (지역별 인구 출처 : 행정안전부, 주민등록인구현황 (’20.1월 기준))'
-    return f'```{x.get_string()}```' + helper
+    return f'```{x.get_string()}```'

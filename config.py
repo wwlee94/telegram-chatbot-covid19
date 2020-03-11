@@ -1,4 +1,4 @@
 import os
 
-TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
-CHAT_ID = os.environ.get('CHAT_ID', '')
+TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '1114772095:AAG13FGUFA-bHmbOrzR2TeGbZQfJZ7M6yTc')
+CHAT_ID = os.environ.get('CHAT_ID', -423260714)
