@@ -1,5 +1,3 @@
-import crawler
-import telegram_notify as telegram_bot
+import telegram_chatbot
 
-data = crawler.get_total_cityline()
-telegram_bot.send_msg(data)
+telegram_chatbot._run()
