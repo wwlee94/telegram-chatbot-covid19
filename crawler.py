@@ -62,4 +62,4 @@ def pretty_print(data):
 
     for dat in data[1:]:
         x.add_row(dat)
-    return f'```{x.get_string()}```'
+    return x.get_string()
