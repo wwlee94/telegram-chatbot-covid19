@@ -18,7 +18,7 @@ def get_total_cityline():
     string += f'[확진 환자 수] {tds[1].text}명\n'
     string += f'[격리 환자 수] {tds[2].text}명\n'
     string += f'[사망자 수] {tds[3].text}명\n'
-    string += f'[발생률*] {tds[4].text}\n'
+    string += f'[발생률 *] {tds[4].text}\n'
 
     helper = '\n💁🏻‍♀️ * 인구 10만 명당 (지역별 인구 출처 : 행정안전부 (’20.1월 기준))'
     return string + helper
