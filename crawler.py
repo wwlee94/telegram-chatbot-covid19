@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from prettytable import PrettyTable
 
 BASE_URL = 'http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun='
 
@@ -32,3 +33,13 @@ def get_all_cityline():
         total_data.append(result)
     
     return total_data
+
+def pretty_print(data):
+    x = PrettyTable()
+
+    x.field_names = data[0]
+
+    for dat in data[1:]:
+        x.add_row(dat)
+
+    return x
