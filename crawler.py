@@ -63,6 +63,7 @@ def get_all_citylines():
         data.append(result)
     
     data = pretty_print(data)
+
     return data
 
 def pretty_print(data):
@@ -73,4 +74,5 @@ def pretty_print(data):
     for dat in data[1:]:
         x.add_row(dat)
 
-    return x
+    helper = '\n\n (*) 인구 10만 명당 (지역별 인구 출처 : 행정안전부, 주민등록인구현황 (’20.1월 기준))'
+    return f'```{x.get_string()}```' + helper
