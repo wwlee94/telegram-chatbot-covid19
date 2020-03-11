@@ -1,3 +1,3 @@
 import os
 
-TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '1114772095:AAH59UxwCxrS6uSWpf3nUpb3vwfHX9VGOXU')
+TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
