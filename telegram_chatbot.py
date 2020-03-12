@@ -11,6 +11,8 @@ def _help(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _show(bot, update):
+    # 사용한 유저 이름? 로그 띄우기 or 파일 저장
+    # 업데이트 날짜도 띄우기
     data = crawler.get_total_cityline()
     bot.send_message(chat_id=update.message.chat_id, text=data)
 
