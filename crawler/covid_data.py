@@ -67,7 +67,7 @@ def get_all_citylines():
         result.append([int(tds[1].text), string])
     
     result.sort(key= lambda x:x[0], reverse=True)
-    certain_desc = ''
+    certain_desc = '🗺 시도별 코로나 확진자 발생동향\n'
     for res in result:
         certain_desc += res[1]
     return certain_desc

@@ -1,17 +1,17 @@
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
-from crawler import covid_data
+from crawler import (covid_data, naver_news)
 import config
 
-command_help = '* 도움말 - /help \n* 국내 총 확진자 수 - /total\n* 시도별 확진자 수 - /citylines \n'
+command_help = '* 도움말 - /help \n* 국내 총 확진자 수 - /total\n* 시도별 확진자 수 - /citylines\n* 네이버 뉴스 바로 받기 - /naver_news\n* 코로나 알림 등록 - /notify\n'
 
 def _start(bot, update):
     chat = update.message.chat
     print(chat.last_name +', '+chat.first_name)
-    message = f'코로나 알리미를 시작합니다 🙇🏻\n아래 사이트에서 데이터를 파싱해 국내 코로나 확진자 수를 알려드립니다. \n{command_help}Created by LEE, Woo-won\n  http://ncov.mohw.go.kr/'
+    message = f'[ Show Corona Infos ]\n코로나 알리미를 시작합니다 🙇🏻\n\n📲 질병관리본부, 네이버 RSS를 이용해\n국내 코로나 총 확진자 수와 실시간으로\n최신 뉴스를 받아볼 수 있습니다 :)\n\n/help 명령어를 입력해서 이용해보세요 !\n\n질문 사항은 wwlee9410@gmail.com\n\nCreated by LEE, Woo-won\n'
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _help(bot, update):
-    message = f'📬 코로나 챗봇 알리미입니다.\n{command_help}'
+    message = f'📬 코로나 챗봇 도우미입니다 :)\n{command_help}'
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _total(bot, update):
@@ -24,14 +24,16 @@ def _citylines(bot, update):
     data = covid_data.get_all_citylines() # 국내 도시별 확진자 정보
     bot.send_message(chat_id=update.message.chat_id, text=time + data)
 
-def _notify(boy, update):
-    message = '📰 NAVER 코로나 최신 뉴스를 실시간으로 받아보시려면 아래 챗봇에 참여해주세요 !\nhttps://t.me/ShowMeCorona'
+def _naver_news(bot, update):
+    news = naver_news.get_current_news() # 네이버 뉴스
+    bot.send_message(chat_id=update.message.chat_id, text=news)
+
+def _notify(bot, update):
+    message = '📰 NAVER 코로나 최신 뉴스를\n실시간 알림으로 받아보시려면 아래 챗봇에 참여해보세요 !\nhttps://t.me/ShowMeCorona'
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _unknown(bot, update):
-    command = update.message.text
-    if command not in ['/start', '/help', '/total', '/citylines']:
-        bot.send_message(chat_id=update.message.chat_id, text='해당 명령어는 존재하지 않습니다 🙅🏻‍♂️')
+    bot.send_message(chat_id=update.message.chat_id, text='해당 명령어는 존재하지 않습니다 🙅🏻‍♂️')
 
 def _run():
     updater = Updater(config.TELEGRAM_TOKEN)
@@ -43,6 +45,7 @@ def _run():
     dispatcher.add_handler(CommandHandler('help', _help))
     dispatcher.add_handler(CommandHandler('total', _total))
     dispatcher.add_handler(CommandHandler('citylines', _citylines))
+    dispatcher.add_handler(CommandHandler('naver_news', _naver_news))
     dispatcher.add_handler(CommandHandler('notify', _notify))
     dispatcher.add_handler(MessageHandler(Filters.command, _unknown))
 

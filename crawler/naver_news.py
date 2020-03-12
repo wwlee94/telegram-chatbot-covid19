@@ -28,7 +28,7 @@ def get_current_news():
         # author = item.select('author')[0].text
         # category = item.select('category')[0].text
         if ten_minutes_ago <= date <= five_minutes_ago:
-            helper = f'[ NAVER 뉴스 ]\n{date.year}년 {date.month}월 {date.day}일 {date.hour}시 {date.minute}분\n'
+            helper = f'[ NAVER 뉴스 ] 🗞\n{date.year}년 {date.month}월 {date.day}일 {date.hour}시 {date.minute}분\n'
             # 태그가 제대로 안잡혀서 따로 파싱
             link = str(item).split('<link/>')[1]
             link = link.split('<description>')[0].strip()
