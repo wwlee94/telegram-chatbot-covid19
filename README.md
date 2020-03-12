@@ -25,5 +25,5 @@ python3 app.py
 ```
 
 ## 참고 사이트
-http://ncov.mohw.go.kr
-https://www.naver.com
+* http://ncov.mohw.go.kr
+* https://www.naver.com
