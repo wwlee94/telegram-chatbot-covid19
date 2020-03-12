@@ -14,7 +14,7 @@ def get_update_time():
     time = soup.select('.timetable')[0].text.strip()
     time = time.split('.')
     
-    date = f'- {today.year}년 {time[0]}월 {time[1]}일자 업데이트 -\n'
+    date = f'[ {today.year}년 {time[0]}월 {time[1]}일자 업데이트 ]\n'
     return date
 
 def get_total_cityline():

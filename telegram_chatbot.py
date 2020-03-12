@@ -2,13 +2,16 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
 import crawler
 import config
 
+command_help = '* 도움말 - /help \n* 국내 총 확진자 수 - /total\n* 시도별 확진자 수 - /citylines \n'
+
 def _start(bot, update):
-    print(update.message.chat.username)
-    message = '코로나 알리미를 시작합니다 🙇🏻\n아래 사이트에서 데이터를 파싱해 국내 코로나 확진자 수를 알려드립니다. \n* 도움말 - /help \n* 확진자 수 보기 - /show \nCreated by LEE, Woo-won\n  http://ncov.mohw.go.kr/'
+    chat = update.message.chat
+    print(chat.last_name +', '+chat.first_name)
+    message = f'코로나 알리미를 시작합니다 🙇🏻\n아래 사이트에서 데이터를 파싱해 국내 코로나 확진자 수를 알려드립니다. \n{command_help}Created by LEE, Woo-won\n  http://ncov.mohw.go.kr/'
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _help(bot, update):
-    message = '📬 코로나 챗봇 알리미입니다.\n* 도움말 - /help \n* 확진자 수 보기 - /show \n'
+    message = f'📬 코로나 챗봇 알리미입니다.\n{command_help}'
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _total(bot, update):
@@ -17,6 +20,7 @@ def _total(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=time + data)
 
 def _citylines(bot, update):
+    time = crawler.get_update_time() # 업데이트 날짜
     data = crawler.get_all_citylines() # 국내 도시별 확진자 정보
     bot.send_message(chat_id=update.message.chat_id, text=time + data)
 
