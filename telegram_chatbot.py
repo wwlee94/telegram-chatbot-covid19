@@ -1,5 +1,5 @@
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters)
-import crawler
+from crawler import covid_data
 import config
 
 command_help = '* 도움말 - /help \n* 국내 총 확진자 수 - /total\n* 시도별 확진자 수 - /citylines \n'
@@ -15,14 +15,18 @@ def _help(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _total(bot, update):
-    time = crawler.get_update_time() # 업데이트 날짜
-    data = crawler.get_total_cityline() # 국내 확진자 정보
+    time = covid_data.get_update_time() # 업데이트 날짜
+    data = covid_data.get_total_cityline() # 국내 확진자 정보
     bot.send_message(chat_id=update.message.chat_id, text=time + data)
 
 def _citylines(bot, update):
-    time = crawler.get_update_time() # 업데이트 날짜
-    data = crawler.get_all_citylines() # 국내 도시별 확진자 정보
+    time = covid_data.get_update_time() # 업데이트 날짜
+    data = covid_data.get_all_citylines() # 국내 도시별 확진자 정보
     bot.send_message(chat_id=update.message.chat_id, text=time + data)
+
+def _notify(boy, update):
+    message = '📰 NAVER 코로나 최신 뉴스를 실시간으로 받아보시려면 아래 챗봇에 참여해주세요 !\nhttps://t.me/ShowMeCorona'
+    bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _unknown(bot, update):
     command = update.message.text
@@ -39,6 +43,7 @@ def _run():
     dispatcher.add_handler(CommandHandler('help', _help))
     dispatcher.add_handler(CommandHandler('total', _total))
     dispatcher.add_handler(CommandHandler('citylines', _citylines))
+    dispatcher.add_handler(CommandHandler('notify', _notify))
     dispatcher.add_handler(MessageHandler(Filters.command, _unknown))
 
     # Run the bot until you press Ctrl-C
