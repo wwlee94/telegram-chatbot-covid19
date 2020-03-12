@@ -4,7 +4,7 @@ from prettytable import PrettyTable
 import datetime
 
 BASE_URL = 'http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun='
-helper = '\n💁🏻‍♀️ * 인구 10만 명당 \n(지역별 인구 출처 : 행정안전부 (’20.1월 기준))'
+helper = '\n💁🏻‍♀️ [발생률 *]은 인구 10만 명당 1명\n지역별 인구 출처 : 행정안전부\n( ’20.1월 기준 )'
 
 def get_update_time():
     result = requests.get(BASE_URL)
