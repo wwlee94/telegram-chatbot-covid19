@@ -5,10 +5,6 @@ name: 국내 코로나 총 확진자 수 알리미
 # Controls when the action will run. Triggers the workflow on push or pull request 
 # events but only for the master branch
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
   schedule:
     # 오전 10시 (GitHub Action은 UTC 타임존)
     - cron: "0 1 * * *"
