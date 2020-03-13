@@ -4,6 +4,7 @@ from telegram.ext import (Updater, Filters, CommandHandler, MessageHandler, Call
 from telegram import (ReplyKeyboardMarkup, KeyboardButton)
 from crawler import (covid_data, naver_news)
 from runner import logger
+import time
 
 command_help = '* 도움말 - /help \n* 국내 총 확진자 수 - /total\n* 시도별 확진자 수 - /citylines\n* 네이버뉴스 바로 받기 - /naver_news\n* 코로나 알림 등록 - /notify\n* 공적마스크 판매 현황 - /find_mask\n'
 
@@ -38,7 +39,7 @@ def _find_mask(bot, update):
         one_time_keyboard=True,
         selective=True
     )
-    message = '[ 공적마스크 판매 현황 조회 😷]\n🏥 공적마스크 판매처 및 재고 현황을 보려면\n👾 챗봇이 현재 위치를 가져올 수 있도록\n위치 공유를 허용해주세요 !\n\n🚫 위치 전송 에러가 발생하게 되거나\n챗봇에 아무런 반응이 없다면 ❗️\n\n1. 직접 각 디바이스 설정에 들어가서\n사용자 위치 공유를 허용해주세요 !\n2. 현재 위치를 직접 전송해주세요 !'
+    message = '[ 공적마스크 판매 현황 조회 😷]\n🏥 공적마스크 판매처 및 재고 현황을 보려면\n👾 챗봇이 현재 위치를 가져올 수 있도록\n위치 공유 버튼을 클릭해주세요 !\n\n🚫 위치 전송 에러가 발생하게 되거나\n챗봇에 아무런 반응이 없다면 🚫\n\n1️⃣ 직접 각 디바이스 설정에 들어가서\n사용자 위치 공유를 허용해주세요 !\n2️⃣ 현재 위치를 직접 전송해주세요 !'
     bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=reply_markup)
 
 def _location(bot, update):
@@ -49,8 +50,24 @@ def _location(bot, update):
         message = update.message
     current_pos = (message.location.latitude, message.location.longitude)
 
-    result = public_mask_api(current_pos)
-    print(result)
+    stores = public_mask_api(current_pos, 3)
+
+    mask = {
+        'plenty' : '✅ 충분함 : 100개 이상',
+        'some' : '📳 적당함 : 30개 이상 100개 미만',
+        'few' : '🆘 부족함 : 2개 이상 30개 미만',
+        'empty' : '❌ 판매중지 : 재고 없음',
+        'break' : '❌ 판매중지 : 재고 없음'
+    }
+    message = f"[ 공적마스크 판매처 및 재고 현황 조회 ]\n📦 마스크 재고 상태 분류 📦\n{mask['plenty']}\n{mask['some']}\n{mask['few']}\n{mask['empty']}"
+    bot.send_message(chat_id=update.message.chat_id, text=message)
+    time.sleep(0.5)
+
+    message = None
+    for store in stores:
+        message = f"🏪 판매처 : {store['name']}\n{mask[store['remain_stat']]}\n🕰 입고시간 : {store['stock_at']}\n\n🗺 길찾기\n{store['url']}"
+        bot.send_message(chat_id=update.message.chat_id, text=message)
+        time.sleep(0.5)
 
 def _notify(bot, update):
     message = '📰 NAVER 코로나 최신 뉴스를 꾸준하게\n실시간 알림으로 받아보려면 ~!\n텔레그램 챗봇에 참여해보세요 !\nhttps://t.me/ShowCoronaNews'
@@ -88,7 +105,7 @@ def _run():
     updater.stop()
 
 # 공적마스크 API 호출
-def public_mask_api(pos):
+def public_mask_api(pos, count):
     public_mask = 'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json'
     payload = {
         'lat': pos[0],
@@ -98,15 +115,15 @@ def public_mask_api(pos):
     res = requests.get(public_mask, params=payload)
     stores = res.json()['stores']
 
-    types = ['plenty', 'some', 'few', 'empty', 'break']
     stat = {
-        types[0] : [],
-        types[1] : [],
-        types[2] : [],
-        types[3] : [],
-        types[4] : []
+        'plenty' : [],
+        'some' : [],
+        'few' : [],
+        'empty' : [],
+        'break' : []
     } # 재고 상태[100개 이상(녹색): 'plenty' / 30개 이상 100개미만(노랑색): 'some' / 2개 이상 30개 미만(빨강색): 'few' / 1개 이하(회색): 'empty' / 판매중지: 'break']
-
+    types = list(stat.keys())
+    
     # 분류
     for store in stores:
         for _type in types:
@@ -114,18 +131,19 @@ def public_mask_api(pos):
                 stat[_type].append(store)
 
     # plenty부터 쭉 찾으면서 3개 추출
-    result = []
+    stores = []
     for _type in types:
         if stat[_type]: 
             for store in stat[_type]:
-                result.append(store)
-                if len(result) == 3:
+                stores.append(store)
+                if len(stores) == count:
                     break
     
     # url 링크 추가
-    for res in result:
+    for store in stores:
         # s: start, e: end, lat: latitude, lng: longitude, text: name
-        naver_map = f"http://map.naver.com/index.nhn?&slat={pos[0]}&slng={pos[1]}&elat={res['lat']}&elng={res['lng']}&etext={res['name']}&menu=route&pathType=3"
-        res['url'] = naver_map
+        # naver_map = f"http://map.naver.com/index.nhn?&slat={pos[0]}&slng={pos[1]}&elat={store['lat']}&elng={store['lng']}&etext={store['name']}&menu=route&pathType=3"
+        kakao_map = f"https://map.kakao.com/link/map/{store['name']},{store['lat']},{store['lng']}"
+        store['url'] = kakao_map
     
-    return result
+    return stores
