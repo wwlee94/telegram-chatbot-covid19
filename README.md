@@ -33,6 +33,10 @@ python3 app.py
     > bot.sendMessage('@그룹아이디', ...)
 6. 아무 파일이나 생성 후 telegram_notify를 import해서 테스트 해보면 끝 !
 
+## 배포
+### 1. 챗봇 서버는 Heroku에 서버 App 생성 후 배포
+### 2. 코로나 확진자 수 & 네이버 뉴스 알리미는 Github Actions (CI/CD) 사용하여 스케줄링
+
 ### 참고 사이트
 * [네이버 뉴스](https://www.naver.com)
 * [질병관리본부 - 코로나 발생동향](http://ncov.mohw.go.kr)

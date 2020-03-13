@@ -18,14 +18,12 @@ def _help(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _total(bot, update):
-    time = covid_data.get_update_time() # 업데이트 날짜
     data = covid_data.get_total_cityline() # 국내 확진자 정보
-    bot.send_message(chat_id=update.message.chat_id, text=time + data)
+    bot.send_message(chat_id=update.message.chat_id, text=data)
 
 def _citylines(bot, update):
-    time = covid_data.get_update_time() # 업데이트 날짜
     data = covid_data.get_all_citylines() # 국내 도시별 확진자 정보
-    bot.send_message(chat_id=update.message.chat_id, text=time + data)
+    bot.send_message(chat_id=update.message.chat_id, text=data)
 
 def _naver_news(bot, update):
     news = naver_news.get_current_news() # 네이버 뉴스

@@ -6,6 +6,6 @@ import telegram_notify as telegram_bot
 import logger
 
 news = naver_news.get_current_news()
-if news:
-    print(logger.info('NAVER 뉴스 기사 전송 성공 !'))
-    telegram_bot.send_msg(news)
+
+print(logger.info('NAVER 뉴스 기사 잡 실행 !'))
+telegram_bot.send_msg(news)

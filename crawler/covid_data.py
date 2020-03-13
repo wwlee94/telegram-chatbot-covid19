@@ -4,7 +4,7 @@ from prettytable import PrettyTable
 import datetime
 
 BASE_URL = 'http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun='
-helper = '\n💁🏻‍♀️ [발생률 *]은 인구 10만 명당 1명\n지역별 인구 출처 : 행정안전부\n( ’20.1월 기준 )'
+helper = '\n💁🏻‍♀️ 발생률* : 인구 10만 명당\n지역별 인구 출처 : 행정안전부\n( ’20.1월 기준 )'
 
 def get_update_time():
     result = requests.get(BASE_URL)
@@ -21,9 +21,9 @@ def get_total_cityline():
     result = requests.get(BASE_URL)
     soup = BeautifulSoup(result.text, 'html.parser')
 
-
     table = soup.select('.num tbody tr.sumline')[0]
     string = ''
+
     tds = table.select('td')
     if '-' not in tds[0].text:
         day_increase = f'+{tds[0].text}'
@@ -40,7 +40,8 @@ def get_total_cityline():
     string += f'[사망자 수] {col[3]}명\n'
     string += f'[발생률 *] {tds[4].text}\n'
 
-    return string + helper
+    time = get_update_time() # 업데이트 날짜
+    return time + string + helper
 
 # 테이블
 def get_all_citylines():
@@ -61,16 +62,19 @@ def get_all_citylines():
             day_increase = tds[0].text
     
         if day_increase == '+0': # 0이면 표기 안함
-            string = f'{city}: {certain}\n'
+            string = f'{city}: {certain}명\n'
         else:
-            string = f'{city}: {certain} ({day_increase})\n'
+            string = f'{city}: {certain}명 ( {day_increase} )\n'
         result.append([int(tds[1].text), string])
     
     result.sort(key= lambda x:x[0], reverse=True)
     certain_desc = '🗺 시도별 코로나 확진자 발생동향\n'
     for res in result:
         certain_desc += res[1]
-    return certain_desc
+
+    time = get_update_time() # 업데이트 날짜
+
+    return time + certain_desc
 
 # 콘솔 확인용
 def pretty_print(data):
