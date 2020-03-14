@@ -104,6 +104,19 @@ def _run():
     updater.idle()
     updater.stop()
 
+# 좌표 WGS84 -> WCONGNAMUL 변환
+def transcoord_api(x_loc, y_loc):
+    transcoord_url = f'https://dapi.kakao.com/v2/local/geo/transcoord.json?x={x_loc}&y={y_loc}&input_coord=WGS84&output_coord=WCONGNAMUL'
+    headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization' : f'KakaoAK {config.KAKAO_API_KEY}'
+    }
+
+    res = requests.get(transcoord_url, headers= headers)
+    wcon = res.json()['documents'][0]
+
+    return wcon['x'], wcon['y']
+
 # 공적마스크 API 호출
 def public_mask_api(pos, count):
     public_mask = 'https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json'
@@ -141,13 +154,12 @@ def public_mask_api(pos, count):
                 if len(stores) == count:
                     complete = True
                     break
-    
+
+    s_x, s_y = transcoord_api(pos[1], pos[0])
     # url 링크 추가
     for store in stores:
-        # s: start, e: end, lat: latitude, lng: longitude, text: name
-        # naver_map = f"http://map.naver.com/index.nhn?&slat={pos[0]}&slng={pos[1]}&elat={store['lat']}&elng={store['lng']}&etext={store['name']}&menu=route"
-        # google_map = f"https://www.google.co.kr/maps?saddr={pos[0]},{pos[1]}&daddr={store['addr'].replace(' ','+')}+{store['name']}"
-        kakao_map = f"https://map.kakao.com/link/map/{store['name']},{store['lat']},{store['lng']}"
+        e_x, e_y = transcoord_api(store['lng'], store['lat'])
+        kakao_map = f"https://map.kakao.com/?sX={s_x}&sY={s_y}&sName=현재+위치&eX={e_x}&eY={e_y}&eName={store['name']}"
         store['url'] = kakao_map
     
     return stores
