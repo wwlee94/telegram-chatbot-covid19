@@ -6,8 +6,8 @@ name: 국내 코로나 총 확진자 수 알리미
 # events but only for the master branch
 on:
   schedule:
-    # 오전 10시 (GitHub Action은 UTC 타임존)
-    - cron: "0 1 * * *"
+    # 오전 11시 (GitHub Action은 UTC 타임존) - 오차 4분정도
+    - cron: "56 1 * * *"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

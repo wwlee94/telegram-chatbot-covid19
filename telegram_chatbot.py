@@ -13,11 +13,11 @@ def _start(bot, update):
     name = f'{user.last_name}, {user.first_name} 유저 접속' 
     print(logger.info(name))
 
-    message = f'[ Show Corona Infos 🦠]\n코로나 알리미를 시작합니다 🙇🏻\n\n📲 질병관리본부, 네이버 RSS를 이용해\n국내 코로나 총 확진자 수와 실시간으로\n최신 뉴스를 받아볼 수 있습니다 :)\n\n🙋🏻‍♀️‍/help 명령어를 입력 후 이용하세요 !\n첫 명령어는 5~10초 소요될 수 있습니다.\n\n질문 사항은 wwlee9410@gmail.com\n\nCreated by LEE, Woo-won\n'
+    message = f'[ Show Corona Infos ]\n코로나 알리미를 시작합니다 🙇🏻\n\n📲 질병관리본부, 네이버 RSS를 이용해\n국내 코로나 총 확진자 수와 실시간으로\n최신 뉴스를 받아볼 수 있습니다 :)\n\n🙋🏻‍♀️‍/help 명령어를 입력 후 이용하세요 !\n첫 명령어는 5~10초 소요될 수 있습니다.\n\n질문 사항은 wwlee9410@gmail.com\n\nCreated by LEE, Woo-won\n'
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _help(bot, update):
-    message = f'📬 코로나 챗봇 도우미입니다 :)\n{command_help}'
+    message = f'📬 코로나 챗봇 도우미입니다 :)\n\n{command_help}'
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _total(bot, update):
@@ -29,7 +29,7 @@ def _citylines(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=data)
 
 def _naver_news(bot, update):
-    news = naver_news.get_current_news() # 네이버 뉴스
+    news = naver_news.get_current_news_diff(update.message.from_user.first_name) # 네이버 뉴스
     bot.send_message(chat_id=update.message.chat_id, text=news)
 
 def _find_mask(bot, update):
@@ -39,7 +39,7 @@ def _find_mask(bot, update):
         one_time_keyboard=True,
         selective=True
     )
-    message = '[ 공적마스크 판매 현황 조회 😷]\n🏥 공적마스크 판매처 및 재고 현황을 보려면\n👾 챗봇이 현재 위치를 가져올 수 있도록\n위치 공유 버튼을 클릭해주세요 !\n\n🚫 위치 전송 에러가 발생하게 되거나\n챗봇에 아무런 반응이 없다면 🚫\n\n1️⃣ 직접 각 디바이스 설정에 들어가서\n사용자 위치 공유를 허용해주세요 !\n2️⃣ 현재 위치를 직접 전송해주세요 !'
+    message = '[ 공적마스크 판매 현황 조회 ]\n\n🏥 공적마스크 판매처 및 재고 현황을 보려면\n👾 챗봇이 현재 위치를 가져올 수 있도록\n위치 공유 버튼을 클릭해주세요 !\n\n🚫 위치 전송 에러가 발생하게 되거나\n챗봇에 아무런 반응이 없다면 🚫\n\n1. 직접 각 디바이스 설정에 들어가서\n사용자 위치 공유를 허용해주세요 !\n2. 또는 현재 위치를 직접 전송해주세요 !\nTip) Clip 아이콘을 클릭합니다. \n-> Location 클릭 후 현재 위치 전송 !'
     bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=reply_markup)
 
 def _location(bot, update):
@@ -53,24 +53,24 @@ def _location(bot, update):
     stores = public_mask_api(current_pos, 3)
 
     mask = {
-        'plenty' : '✅ 충분함 : 100개 이상',
-        'some' : '📳 적당함 : 30개 이상 100개 미만',
-        'few' : '🆘 부족함 : 2개 이상 30개 미만',
-        'empty' : '❌ 판매중지 : 재고 없음',
-        'break' : '❌ 판매중지 : 재고 없음'
+        'plenty' : '✅ 충분함 - 100개 이상',
+        'some' : '📳 적당함 - 30개 이상 100개 미만',
+        'few' : '🆘 부족함 - 2개 이상 30개 미만',
+        'empty' : '🚫 판매중지 - 재고 없음',
+        'break' : '🚫 판매중지 - 재고 없음'
     }
-    message = f"[ 공적마스크 판매처 및 재고 현황 조회 ]\n📦 마스크 재고 상태 분류 📦\n{mask['plenty']}\n{mask['some']}\n{mask['few']}\n{mask['empty']}"
+    message = f"[ 공적마스크 판매처 및 재고 현황 조회 ]\n\n📦 마스크 재고 상태 분류 📦\n{mask['plenty']}\n{mask['some']}\n{mask['few']}\n{mask['empty']}"
     bot.send_message(chat_id=update.message.chat_id, text=message)
     time.sleep(0.5)
 
     message = None
     for store in stores:
-        message = f"🏪 판매처 : {store['name']}\n{mask[store['remain_stat']]}\n🕰 입고시간 : {store['stock_at']}\n\n🗺 길찾기\n{store['url']}"
+        message = f"[ 판매처 정보 ]\n🏨 판매처 - {store['name']}\n{mask[store['remain_stat']]}\n⏰ 입고시간 - {store['stock_at']}\n\n🗺 길찾기\n{store['url']}"
         bot.send_message(chat_id=update.message.chat_id, text=message)
         time.sleep(0.5)
 
 def _notify(bot, update):
-    message = '📰 NAVER 코로나 최신 뉴스를 꾸준하게\n실시간 알림으로 받아보려면 ~!\n텔레그램 챗봇에 참여해보세요 !\nhttps://t.me/ShowCoronaNews'
+    message = '[ 코로나 뉴스 알리미 구독 ]\n\n📰 NAVER 코로나 실시간 뉴스를 꾸준하게\n실시간 알림으로 받아보려면 ~!\n👾 텔레그램 챗봇에 참여해보세요 !\nhttps://t.me/ShowCoronaNews'
     bot.send_message(chat_id=update.message.chat_id, text=message)
 
 def _unknown(bot, update):
@@ -115,16 +115,17 @@ def public_mask_api(pos, count):
     res = requests.get(public_mask, params=payload)
     stores = res.json()['stores']
 
+    # 재고 상태 - 100개 이상(녹색): 'plenty' / 30개 이상 100개미만(노랑색): 'some' / 2개 이상 30개 미만(빨강색): 'few' / 1개 이하(회색): 'empty' / 판매중지: 'break'
     stat = {
         'plenty' : [],
         'some' : [],
         'few' : [],
         'empty' : [],
         'break' : []
-    } # 재고 상태[100개 이상(녹색): 'plenty' / 30개 이상 100개미만(노랑색): 'some' / 2개 이상 30개 미만(빨강색): 'few' / 1개 이하(회색): 'empty' / 판매중지: 'break']
-    types = list(stat.keys())
-    
-    # 분류
+    }
+    types = list(stat.keys()) # dict key 순서대로 저장됨
+
+    # 재고 상태 분류
     for store in stores:
         for _type in types:
             if store['remain_stat'] == _type:
@@ -132,17 +133,20 @@ def public_mask_api(pos, count):
 
     # plenty부터 쭉 찾으면서 3개 추출
     stores = []
+    complete = False
     for _type in types:
-        if stat[_type]: 
+        if stat[_type] and complete is False: 
             for store in stat[_type]:
                 stores.append(store)
                 if len(stores) == count:
+                    complete = True
                     break
     
     # url 링크 추가
     for store in stores:
         # s: start, e: end, lat: latitude, lng: longitude, text: name
-        # naver_map = f"http://map.naver.com/index.nhn?&slat={pos[0]}&slng={pos[1]}&elat={store['lat']}&elng={store['lng']}&etext={store['name']}&menu=route&pathType=3"
+        # naver_map = f"http://map.naver.com/index.nhn?&slat={pos[0]}&slng={pos[1]}&elat={store['lat']}&elng={store['lng']}&etext={store['name']}&menu=route"
+        # google_map = f"https://www.google.co.kr/maps?saddr={pos[0]},{pos[1]}&daddr={store['addr'].replace(' ','+')}+{store['name']}"
         kakao_map = f"https://map.kakao.com/link/map/{store['name']},{store['lat']},{store['lng']}"
         store['url'] = kakao_map
     

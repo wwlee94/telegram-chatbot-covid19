@@ -14,7 +14,7 @@ def get_update_time():
     time = soup.select('.timetable')[0].text.strip()
     time = time.split('.')
     
-    date = f'[ {today.year}년 {time[0]}월 {time[1]}일자 업데이트 ]\n'
+    date = f'[ {today.year}년 {time[0]}월 {time[1]}일자 업데이트 ]\n\n'
     return date
 
 def get_total_cityline():
@@ -35,7 +35,7 @@ def get_total_cityline():
         col[i] = format(int(tds[i].text), ',')
 
     string += '🏥 최근 코로나 확진자 합계\n'
-    string += f'[확진 환자 수] {col[1]}명 ({day_increase})\n'
+    string += f'[확진 환자 수] {col[1]}명 ( {day_increase} )\n'
     string += f'[격리 해제 수] {col[2]}명\n'
     string += f'[사망자 수] {col[3]}명\n'
     string += f'[발생률 *] {tds[4].text}\n'
@@ -62,9 +62,9 @@ def get_all_citylines():
             day_increase = tds[0].text
     
         if day_increase == '+0': # 0이면 표기 안함
-            string = f'{city}: {certain}명\n'
+            string = f'{city} : {certain}명\n'
         else:
-            string = f'{city}: {certain}명 ( {day_increase} )\n'
+            string = f'{city} : {certain}명 ( {day_increase} )\n'
         result.append([int(tds[1].text), string])
     
     result.sort(key= lambda x:x[0], reverse=True)
