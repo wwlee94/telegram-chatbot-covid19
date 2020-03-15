@@ -60,8 +60,9 @@ def _location(bot, update):
         'break' : '🚫 판매중지 - 재고 없음'
     }
 
+    wcon_x, wcon_y = transcoord_api(current_pos[1], current_pos[0])
     # q = 공적마스크판매처
-    message = f"[ 공적마스크 판매처 및 재고 현황 조회 ]\n\n📦 마스크 재고 상태 분류 📦\n{mask['plenty']}\n{mask['some']}\n{mask['few']}\n{mask['empty']}\n가까운 판매처 2곳은 현재위치 기준\n500m 이내의 재고 많은 순입니다 :)\n\n🗺 주변 모든 판매처 보기\n<a href='https://m.map.kakao.com/actions/searchView?q=%ea%b3%b5%ec%a0%81%eb%a7%88%ec%8a%a4%ed%81%ac%ed%8c%90%eb%a7%a4%ec%b2%98#!/all/map/place'>https://map.kakao.com</a>"
+    message = f"[ 공적마스크 판매처 및 재고 현황 조회 ]\n\n📦 마스크 재고 상태 분류 📦\n{mask['plenty']}\n{mask['some']}\n{mask['few']}\n{mask['empty']}\n가까운 판매처 2곳은 현재위치 기준\n500m 이내의 재고 많은 순입니다 :)\n\n🗺 주변 모든 판매처 보기\n<a href='https://m.map.kakao.com/actions/searchView?q=%ea%b3%b5%ec%a0%81%eb%a7%88%ec%8a%a4%ed%81%ac%ed%8c%90%eb%a7%a4%ec%b2%98&wx={wcon_x}&wy={wcon_y}#!/all/map/place'>https://map.kakao.com</a>"
     bot.send_message(chat_id=update.message.chat_id, text=message, parse_mode='HTML', disable_web_page_preview=1)
 
     message = None
