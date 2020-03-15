@@ -32,7 +32,7 @@ def get_current_news():
         date = datetime.strptime(date, '%a, %d %b %Y %H:%M:%S %z')
         date = datetime(date.year, date.month, date.day, date.hour, date.minute, date.second)
 
-        helper = f'[ NAVER 최신 뉴스 ]\n📰 {date.year}년 {date.month}월 {date.day}일 {date.hour}시 {date.minute}분\n\n'
+        helper = f'[ NAVER 실시간 뉴스 ]\n📰 {date.year}년 {date.month}월 {date.day}일 {date.hour}시 {date.minute}분\n\n'
         if ten_minutes_ago <= date:    
             data += f'{title}\n'
             data += f'{link}'
@@ -63,7 +63,7 @@ def get_current_news_diff(chat_id):
         date = datetime.strptime(date, '%a, %d %b %Y %H:%M:%S %z')
         date = datetime(date.year, date.month, date.day, date.hour, date.minute, date.second)
 
-        helper = f'[ NAVER 최신 뉴스 ]\n📰 {date.year}년 {date.month}월 {date.day}일 {date.hour}시 {date.minute}분\n\n'
+        helper = f'[ NAVER 실시간 뉴스 ]\n📰 {date.year}년 {date.month}월 {date.day}일 {date.hour}시 {date.minute}분\n\n'
         if ten_minutes_ago <= date:    
             if chat_id in list(visited.keys()):
                 if link in visited[chat_id]: continue

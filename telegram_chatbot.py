@@ -50,7 +50,7 @@ def _location(bot, update):
         message = update.message
     current_pos = (message.location.latitude, message.location.longitude)
 
-    stores = public_mask_api(current_pos, 3)
+    stores = public_mask_api(current_pos, 2)
 
     mask = {
         'plenty' : '✅ 충분함 - 100개 이상',
@@ -59,13 +59,18 @@ def _location(bot, update):
         'empty' : '🚫 판매중지 - 재고 없음',
         'break' : '🚫 판매중지 - 재고 없음'
     }
-    message = f"[ 공적마스크 판매처 및 재고 현황 조회 ]\n\n📦 마스크 재고 상태 분류 📦\n{mask['plenty']}\n{mask['some']}\n{mask['few']}\n{mask['empty']}"
+    message = f"[ 공적마스크 판매처 및 재고 현황 조회 ]\n\n📦 마스크 재고 상태 분류 📦\n{mask['plenty']}\n{mask['some']}\n{mask['few']}\n{mask['empty']}\n\n가까운 판매처 2곳은 현재위치 기준\n500m 이내의 재고 많은 순입니다 :)"
+    bot.send_message(chat_id=update.message.chat_id, text=message)
+    time.sleep(0.5)
+
+    # q = 공적마스크판매처
+    message = "[ 근처 모든 판매처 보기 ]\nhttps://m.map.kakao.com/actions/searchView?q=%ea%b3%b5%ec%a0%81%eb%a7%88%ec%8a%a4%ed%81%ac%ed%8c%90%eb%a7%a4%ec%b2%98#!/all/map/place"
     bot.send_message(chat_id=update.message.chat_id, text=message)
     time.sleep(0.5)
 
     message = None
     for store in stores:
-        message = f"[ 판매처 정보 ]\n🏨 판매처 - {store['name']}\n{mask[store['remain_stat']]}\n⏰ 입고시간 - {store['stock_at']}\n\n🗺 길찾기\n{store['url']}"
+        message = f"[ 가까운 판매처 바로 길찾기 ]\n🏨 판매처 - {store['name']}\n{mask[store['remain_stat']]}\n⏰ 입고시간 - {store['stock_at']}\n\n🗺 길찾기\n{store['url']}"
         bot.send_message(chat_id=update.message.chat_id, text=message)
         time.sleep(0.5)
 
