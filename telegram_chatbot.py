@@ -38,7 +38,7 @@ def _find_mask(bot, update):
         resize_keyboard= True,
         one_time_keyboard=False,
     )
-    message = "[ 공적마스크 판매 현황 조회 ]\n\n🏥 공적마스크 판매처 및 재고 현황을 보려면\n👾 챗봇이 현재 위치를 가져올 수 있도록\n하단에 뜬 위치 공유 버튼을 클릭해주세요 !\n\n🚫 챗봇에 아무런 반응이 없다면 🚫\n1. 각 디바이스 설정에 직접 들어가서\n텔레그램 위치 서비스를 허용해주세요 !\n2. 또는 현재 위치를 직접 전송해주세요 !\nHow ?) * '클립' 모양 아이콘을 클릭합니다.\n* '위치' 버튼 클릭 후 현재 위치 전송 !"
+    message = "[ 공적마스크 판매 현황 조회 ]\n\n🏥 공적마스크 판매처 및 재고 현황을 보려면\n👾 챗봇이 현재 위치를 가져올 수 있도록\n하단에 뜬 위치 공유 버튼을 클릭해주세요 !\n\n🚫 챗봇에 아무런 반응이 없다면 🚫\n직접 각 디바이스 설정에 들어가서\n텔레그램 위치 서비스를 허용해주세요.\n\n또는 현재 위치를 직접 전송해주세요.\nHow? '클립' 모양 아이콘을 클릭합니다.\n이후에 '위치' 버튼 클릭 후 현재 위치 전송 !"
     bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=reply_markup)
 
 def _location(bot, update):
@@ -61,7 +61,7 @@ def _location(bot, update):
 
     wcon_x, wcon_y = transcoord_api(current_pos[1], current_pos[0])
     # q = 공적마스크판매처
-    message = f"[ 판매처 및 재고 현황 조회 ]\n\n📦 마스크 재고 상태 분류 📦\n{mask['plenty']}\n{mask['some']}\n{mask['few']}\n{mask['empty']}\n추천 판매처 2곳은 현재위치 기준\n500m 이내의 재고 많은 순입니다 :)\n\n🗺 주변 모든 판매처 보기\n<a href='https://m.map.kakao.com/actions/searchView?q=공적마스크판매처&wx={wcon_x}&wy={wcon_y}#!/all/map/place'>https://map.kakao.com</a>\n실제 수치와 표시 재고 수량이\n일부 맞지 않아 참고용으로 확인해주세요!\n"
+    message = f"[ 판매처 및 재고 현황 조회 ]\n\n실제 위치, 표시된 재고 수량에 오차가\n있을 수 있으니 참고용으로 봐주세요 :)\n\n📦 마스크 재고 상태 분류 📦\n{mask['plenty']}\n{mask['some']}\n{mask['few']}\n{mask['empty']}\n추천 판매처 2곳은 현재위치 기준\n500m 이내의 재고 많은 순입니다 !\n\n🗺 주변 모든 판매처 보기\n<a href='https://m.map.kakao.com/actions/searchView?q=공적마스크판매처&wx={wcon_x}&wy={wcon_y}#!/all/map/place'>https://map.kakao.com</a>"
     bot.send_message(chat_id=update.message.chat_id, text=message, parse_mode='HTML', disable_web_page_preview=1)
 
     # 추천 판매처 없을 경우
@@ -72,7 +72,7 @@ def _location(bot, update):
 
     message = None
     for store in stores:
-        time.sleep(1)
+        time.sleep(1.5)
         message = f"[ 추천 판매처 바로 가기 ]\n🏨 판매처 - {store['name']}\n{mask[store['remain_stat']]}\n⏰ 입고시간 - {store['stock_at']}\n\n🗺 길찾기\n<a href='{store['url']}'>https://map.kakao.com</a>"
         bot.send_message(chat_id=update.message.chat_id, text=message, parse_mode='HTML')
 
