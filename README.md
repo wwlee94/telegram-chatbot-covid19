@@ -45,13 +45,16 @@ python3 app.py
 ### 2. 코로나 확진자 수 & 네이버 뉴스 알리미는 Github Actions (CI/CD) 사용하여 스케줄링
 
 ## 🎮 실행 화면
-<p align="center"><img src="./introduction/images/chatbot_list.jpg" width="70%" height="70%"></p>
+제공되는 챗봇은 2가지 입니다.
 
-### 1. [챗봇 종류](https://github.com/wwlee94/telegram-chatbot-covid19/introduction)
+<img src="./introduction/images/chatbot_list.jpg" width="40%" height="40%">
 
-### 2. [*ShowCoronaNews* 챗봇](https://github.com/wwlee94/telegram-chatbot-covid19/introduction/show_corona_news)
+아래 링크를 클릭해서 실행 화면을 확인하세요.
+### 1. [챗봇 정보 & 간단한 설명 보기](https://github.com/wwlee94/telegram-chatbot-covid19/tree/master/introduction)
 
-### 3. [*코로나 뉴스 알리미* 그룹 챗봇](https://github.com/wwlee94/telegram-chatbot-covid19/introduction/show_corona_group)
+### 2. [*ShowCoronaNews* 챗봇 화면 보기](https://github.com/wwlee94/telegram-chatbot-covid19/tree/master/introduction/show_corona_news)
+
+### 3. [*코로나 뉴스 알리미* 그룹 챗봇 화면 보기](https://github.com/wwlee94/telegram-chatbot-covid19/tree/master/introduction/show_corona_group)
 
 ### 개발할 때 참고한 사이트
 * [네이버 뉴스](https://www.naver.com)
