@@ -8,7 +8,7 @@ TOPIC = '코로나'
 # BASE_URL = 'https://media.daum.net/syndication/today_sisa.rss' # 다음 기사
 BASE_URL = f'http://newssearch.naver.com/search.naver?where=rss&query={TOPIC}&field=1&nx_search_query=&nx_and_query=&nx_sub_query=&nx_search_hlquery=&is_dts=0'
 visited_link = {}
-def get_current_news(chat_id):
+def get_current_news(chat_id = "runner-id"):
     data = ''
     result = requests.get(BASE_URL)
     result.encoding = 'UTF-8'
