@@ -5,7 +5,7 @@
 기본적으로 'Telegram' 앱을 다운 받고 진행해주세요.
 
 ### 👨🏻‍💻 1. 텔레그램 챗봇에 접속하기 !
-*[ShowCoronaNews](https://t.me/ShowMeCorona_bot)* 챗봇을 검색하거나 링크를 클릭해 챗봇과 대화해보세요 :)
+*[ShowCoronaNews](https://t.me/ShowMeCorona_bot)* 챗봇을 검색하거나 링크를 클릭해 챗봇과 대화해보세요 :)  
 여러 커맨드를 입력해 코로나 확진자 데이터, 네이버의 실시간 뉴스, 공적마스크 판매처 위치 & 재고 정보 등 원하는 정보를 직접 조회 할 수 있습니다 !
 
 ### 📬 2. 텔레그램 그룹에 접속하기 (구독) !
@@ -30,7 +30,7 @@ python3 app.py
 ```
 실행 이후 자신이 생성한 챗봇에 메시지를 보내봅니다 :)
 
-### 선택) 그룹/채널 공지 메시지를 보내는 법
+### 선택 사항) 그룹 / 채널로 공지 메시지를 보내는 법
 1. 텔레그램 대화 탭으로 이동합니다.
 2. 메시지 추가 아이콘 클릭합니다.
 3. 그룹/채널을 생성한 후 만들었던 개인 챗봇을 초대합니다.
@@ -39,10 +39,6 @@ python3 app.py
 5. telegram_notify.py 파일에 생성한 그룹 아이디를 대입해줍니다.
     > bot.sendMessage('@그룹아이디', ...)
 6. 동일 디렉터리에 아무 파일을 생성한 후 telegram_notify를 import해서 그룹/채널에 메시지 테스트 해보면 끝 !
-
-## 배포
-### 1. 챗봇 서버는 Heroku에 서버 App 생성 후 배포
-### 2. 코로나 확진자 수 & 네이버 뉴스 알리미는 Github Actions (CI/CD) 사용하여 스케줄링
 
 ## 🎮 실행 화면
 제공되는 챗봇은 2가지 입니다.
@@ -56,7 +52,11 @@ python3 app.py
 
 ### 3. [*코로나 뉴스 알리미* 그룹 챗봇 화면 보기](https://github.com/wwlee94/telegram-chatbot-covid19/tree/master/introduction/show_corona_group/README.md)
 
-### 개발할 때 참고한 사이트
+## 💸 서버 배포 & 잡 스케줄링
+1. *ShowCoronaNews* 챗봇 서버는 Heroku에 서버 App 생성 후 배포
+2. *코로나 뉴스 알리미* 는 Github Actions (CI/CD) 사용하여 스케줄링 잡 생성
+
+## 🌏 개발할 때 참고한 사이트
 * [네이버 뉴스](https://www.naver.com)
 * [질병관리본부 - 코로나 발생동향](http://ncov.mohw.go.kr)
 * [공적 마스크 API](https://app.swaggerhub.com/apis-docs/Promptech/public-mask-info/20200307-oas3#/)
