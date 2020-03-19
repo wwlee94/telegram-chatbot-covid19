@@ -50,11 +50,11 @@ python3 app.py
 <img src="./introduction/images/chatbot_list.jpg" width="40%" height="40%">
 
 아래 링크를 클릭해서 실행 화면을 확인하세요.
-### 1. [챗봇 정보 & 간단한 설명 보기](https://github.com/wwlee94/telegram-chatbot-covid19/tree/master/introduction)
+### 1. [챗봇 정보 & 간단한 설명 보기](https://github.com/wwlee94/telegram-chatbot-covid19/blob/master/introduction/README.md)
 
-### 2. [*ShowCoronaNews* 챗봇 화면 보기](https://github.com/wwlee94/telegram-chatbot-covid19/tree/master/introduction/show_corona_news)
+### 2. [*ShowCoronaNews* 챗봇 화면 보기](https://github.com/wwlee94/telegram-chatbot-covid19/blob/master/introduction/show_corona_news/README.md)
 
-### 3. [*코로나 뉴스 알리미* 그룹 챗봇 화면 보기](https://github.com/wwlee94/telegram-chatbot-covid19/tree/master/introduction/show_corona_group)
+### 3. [*코로나 뉴스 알리미* 그룹 챗봇 화면 보기](https://github.com/wwlee94/telegram-chatbot-covid19/tree/master/introduction/show_corona_group/README.md)
 
 ### 개발할 때 참고한 사이트
 * [네이버 뉴스](https://www.naver.com)
