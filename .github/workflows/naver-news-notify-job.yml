@@ -7,7 +7,7 @@ name: 실시간 코로나 네이버 뉴스 알리미
 on:
   schedule:
     # 1시간 마다 11시 ~ 19시 반복 (GitHub Action은 UTC 타임존)
-    - cron: "56 1-9 * * *"
+    - cron: "58 1-9 * * *"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
