@@ -23,7 +23,7 @@ def get_total_cityline():
 
     table = soup.select('.num tbody tr.sumline')[0]
     string = ''
-
+    
     tds = table.select('td')
     if '-' not in tds[0].text:
         day_increase = f'+{tds[0].text}'
@@ -31,8 +31,10 @@ def get_total_cityline():
         day_increase = tds[0].text
     
     col = [0 for _ in range(4)]
-    for i in range(1, 4):
-        col[i] = format(int(tds[i].text), ',')
+    idx = 0
+    for i in [0, 3, 6, 7]:
+        col[idx] = tds[i].text
+        idx+=1
 
     string += '🏥 최근 코로나 확진자 합계\n'
     string += f'[확진 환자 수] {col[1]}명 ( {day_increase} )\n'
@@ -45,6 +47,12 @@ def get_total_cityline():
 
 # 테이블
 def get_all_citylines():
+    # , 있는 수 없애고 정렬시키도록
+    def sort_number(arr):
+        if arr[0].find(',') != -1:
+            arr[0] = arr[0].replace(',','')
+        return arr
+            
     result = requests.get(BASE_URL)
     # result.text -> 문자열 리턴, result.content -> 바이트 리턴
     soup = BeautifulSoup(result.text, 'html.parser')
@@ -55,7 +63,9 @@ def get_all_citylines():
     for idx, row in enumerate(table[1:]):
         tds = row.select('td')
         city = row.select('th')[0].text # 시도명
-        certain = format(int(tds[1].text), ',') # 확진 환자수
+        print(city)
+        certain = tds[3].text
+        # certain = format(int(tds[1].text), ',') # 확진 환자수
         if '-' not in tds[0].text:
             day_increase = f'+{tds[0].text}' # 전일대비 확진환자 증감
         else:
@@ -65,8 +75,10 @@ def get_all_citylines():
             string = f'{city} : {certain}명\n'
         else:
             string = f'{city} : {certain}명 ( {day_increase} )\n'
-        result.append([int(tds[1].text), string])
-    
+        result.append([tds[3].text, string])
+
+    result = list(map(sort_number, result)) # ',' 제거
+    result = list(map(lambda x: [int(x[0]),x[1]], result)) # 숫자로 변경
     result.sort(key= lambda x:x[0], reverse=True)
     certain_desc = '🗺 시도별 코로나 확진자 발생동향\n'
     for res in result:
@@ -85,3 +97,5 @@ def pretty_print(data):
     for dat in data[1:]:
         x.add_row(dat)
     return x.get_string()
+
+print(get_all_citylines())
